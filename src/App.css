@@ -1,0 +1,752 @@
+:root {
+  --brand: #e8894a;
+  --brand-dark: #c96e34;
+  --ink: #2b2118;
+  --muted: #8b7a6b;
+  --card: #ffffff;
+  --line: #f0e1d2;
+  --good: #34a853;
+  --bad: #e5484d;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  flex: 0 0 auto;
+}
+
+.icon-button {
+  background: none;
+  border: 0;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: var(--muted);
+  border-radius: 10px;
+}
+
+.icon-button:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.app-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 20px 24px;
+  min-height: 100%;
+}
+
+.screen--title {
+  justify-content: center;
+  text-align: center;
+}
+
+/* ---------- 타이틀 ---------- */
+
+.title-logo__emoji {
+  font-size: 72px;
+  display: block;
+}
+
+.title-logo__text {
+  margin: 8px 0 4px;
+  font-size: 30px;
+  letter-spacing: -0.5px;
+}
+
+.title-logo__sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.title-stats {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.title-stats > div {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title-stats strong {
+  font-size: 20px;
+}
+
+.title-stats span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.title-links {
+  display: flex;
+  gap: 10px;
+}
+
+.ghost-button {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.primary-button {
+  background: var(--brand);
+  color: #fff;
+  border: 0;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  width: 100%;
+}
+
+.primary-button:active:not(:disabled) {
+  background: var(--brand-dark);
+}
+
+.primary-button:disabled {
+  background: #e6d8ca;
+  color: #a3927f;
+}
+
+.primary-button--big {
+  padding: 18px;
+  font-size: 18px;
+}
+
+.primary-button--tap,
+.primary-button--hold {
+  padding: 22px;
+  touch-action: none;
+  user-select: none;
+}
+
+/* ---------- 플레이 공통 ---------- */
+
+.play-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.play-progress__dots {
+  display: flex;
+  gap: 5px;
+}
+
+.play-progress__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.play-progress__dot.is-on {
+  background: var(--brand);
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.stage__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stage__hint {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.stage__status {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.stage__status--good {
+  color: var(--good);
+  font-weight: 700;
+}
+
+/* ---------- 1. 반죽 ---------- */
+
+.dough {
+  flex: 1;
+  min-height: 220px;
+  border-radius: 20px;
+  background: repeating-linear-gradient(45deg, #f6e6d5, #f6e6d5 12px, #f2dfcb 12px, #f2dfcb 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+}
+
+.dough__disc {
+  background: #f7e2c4;
+  border: 3px solid #e6c79c;
+  border-radius: 50%;
+  transition: width 60ms linear, height 60ms linear;
+}
+
+.dough__roller {
+  position: absolute;
+  bottom: 14px;
+  font-size: 30px;
+  opacity: 0.7;
+}
+
+/* ---------- 게이지 ---------- */
+
+.gauge {
+  position: relative;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.gauge--tall {
+  height: 26px;
+  border-radius: 13px;
+}
+
+.gauge__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(52, 168, 83, 0.32);
+}
+
+.gauge__band--dough {
+  left: 38%;
+  width: 24%;
+}
+
+.gauge__band--fold {
+  left: 38.5%;
+  width: 23%;
+}
+
+.gauge__marker {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 5px;
+  margin-left: -2.5px;
+  border-radius: 3px;
+  background: var(--ink);
+}
+
+.gauge--vertical {
+  height: 180px;
+  width: 26px;
+  margin: 0 auto;
+  border-radius: 13px;
+}
+
+.gauge--vertical .gauge__band {
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: auto;
+}
+
+.gauge__band--cook {
+  bottom: 45%;
+  height: 33%;
+}
+
+.gauge__band--burn {
+  bottom: 94%;
+  height: 6%;
+  background: rgba(229, 72, 77, 0.45);
+}
+
+.gauge__marker--h {
+  top: auto;
+  left: -3px;
+  right: -3px;
+  width: auto;
+  height: 5px;
+  margin-left: 0;
+  margin-bottom: -2.5px;
+}
+
+.progress {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  background: var(--brand);
+  transition: width 80ms linear;
+}
+
+/* ---------- 2. 재료 ---------- */
+
+.order-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.order-card__face {
+  font-size: 30px;
+}
+
+.order-card__hint {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.order-card__hint em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--brand-dark);
+  font-weight: 600;
+}
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  flex: 1;
+  align-content: start;
+}
+
+.chip {
+  position: relative;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.chip--on {
+  border-color: var(--brand);
+  background: #fff2e6;
+}
+
+.chip__emoji {
+  font-size: 24px;
+}
+
+.chip__name {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.chip--on .chip__name {
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.chip__order {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- 3. 빚기 ---------- */
+
+.fold-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.fold-dots__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.fold-dots__dot--on {
+  background: var(--brand);
+}
+
+/* ---------- 4. 조리 ---------- */
+
+.steamer {
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3e7db;
+  border-radius: 20px;
+}
+
+.steamer__mandu {
+  font-size: 76px;
+  transition: filter 200ms linear, transform 200ms linear;
+}
+
+.steamer__mandu--good {
+  filter: saturate(1.15);
+  transform: scale(1.06);
+}
+
+.steamer__mandu--danger {
+  filter: sepia(0.5) saturate(1.4);
+}
+
+.steamer__mandu--burn {
+  filter: grayscale(0.7) brightness(0.55);
+}
+
+/* ---------- 결과 ---------- */
+
+.result-title {
+  margin: 4px 0 0;
+  font-size: 20px;
+}
+
+.grade-summary {
+  display: flex;
+  gap: 8px;
+}
+
+.grade-summary__item {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 4px;
+  text-align: center;
+}
+
+.grade-summary__item strong {
+  display: block;
+  font-size: 20px;
+}
+
+.grade-summary__item span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.grade-summary__item--히든 {
+  border-color: var(--brand);
+  background: #fff2e6;
+}
+
+.result-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.result-list__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.result-list__name {
+  flex: 1;
+}
+
+.result-list__meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.badge {
+  min-width: 34px;
+  text-align: center;
+  border-radius: 8px;
+  padding: 3px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--line);
+}
+
+.badge--상 {
+  background: #dff3e2;
+  color: #226b33;
+}
+
+.badge--히든 {
+  background: var(--brand);
+  color: #fff;
+}
+
+.badge--하 {
+  background: #fbe2e2;
+  color: #a3282c;
+}
+
+.hidden-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #fff2e6;
+  border: 1px solid var(--brand);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hidden-banner span {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--brand-dark);
+}
+
+.points-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.points-box strong {
+  font-size: 20px;
+}
+
+.points-box em {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--good);
+}
+
+.cta-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reward-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: #fffaf4;
+  border: 1.5px solid var(--brand);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: left;
+}
+
+.reward-button:disabled {
+  border-color: var(--line);
+  background: var(--card);
+  color: var(--muted);
+}
+
+.reward-button__ad {
+  font-size: 10px;
+  font-weight: 700;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 1px 4px;
+  color: var(--muted);
+}
+
+.reward-button__label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.reward-button__note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- 도감 / 랭킹 ---------- */
+
+.collection-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.collection {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.collection__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.collection__item.is-owned {
+  border-color: var(--brand);
+}
+
+.collection__emoji {
+  font-size: 28px;
+}
+
+.collection__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.collection__body small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.ranking-week {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ranking-me {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.ranking-me__label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.ranking-me__grid {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ranking-me__grid > div {
+  flex: 1;
+  text-align: center;
+}
+
+.ranking-me__grid strong {
+  display: block;
+  font-size: 20px;
+}
+
+.ranking-me__grid span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.ranking-note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  flex: 1;
+}
+
+/* ---------- 배너 슬롯 ---------- */
+
+.banner-slot {
+  flex: 0 0 auto;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid var(--line);
+  background: #fdf3e8;
+}
+
+.banner-slot__inner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.banner-slot__placeholder {
+  position: absolute;
+  font-size: 11px;
+  color: #bbaa99;
+}
