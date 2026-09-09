@@ -44,9 +44,17 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /** 화면을 옮기는 버튼은 전부 같은 누름 소리를 내요. */
+  const go = useCallback((next: ScreenId) => {
+    playSound("tap");
+    triggerHaptic("tap");
+    setScreen(next);
+  }, []);
+
   const startRound = useCallback(() => {
     unlockAudio();
     triggerHaptic("tap");
+    playSound("tap");
     setOutcome(null);
     setInput(null);
     setIsNewMenu(false);
@@ -71,14 +79,15 @@ export default function App() {
     setInput(roundInput);
     setOutcome(result);
     setIsNewMenu(fresh);
-    if (result.kind === "정통") playSound("done");
-    else if (result.kind === "신메뉴") playSound("hidden");
-    else playSound("burn");
+    if (result.kind === "정통") playSound("success");
+    else if (result.kind === "신메뉴") playSound("newmenu");
+    else playSound("fail");
     triggerHaptic(result.kind === "실패" ? "error" : "success");
     setScreen("result");
   }, []);
 
   const watchHintAd = useCallback(() => {
+    playSound("tap");
     // 어떤 재료가 열렸는지 화면에 보여줘야 해서 id를 먼저 정해두고 저장해요.
     const id = nextHintId(save);
     if (!id) return;
@@ -108,7 +117,7 @@ export default function App() {
       <main className="app-body">
         <div className="panel">
           {screen === "title" && (
-            <TitleScreen onStart={startRound} onOpenCollection={() => setScreen("collection")} />
+            <TitleScreen onStart={startRound} onOpenCollection={() => go("collection")} />
           )}
           {screen === "play" && <PlayScreen onFinish={finishRound} />}
           {screen === "result" && outcome && input && (
@@ -121,12 +130,12 @@ export default function App() {
               revealedNow={revealedNow}
               onWatchHintAd={watchHintAd}
               onReplay={startRound}
-              onOpenCollection={() => setScreen("collection")}
-              onHome={() => setScreen("title")}
+              onOpenCollection={() => go("collection")}
+              onHome={() => go("title")}
             />
           )}
           {screen === "collection" && (
-            <CollectionScreen save={save} onBack={() => setScreen("title")} />
+            <CollectionScreen save={save} onBack={() => go("title")} />
           )}
         </div>
       </main>

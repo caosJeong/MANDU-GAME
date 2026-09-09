@@ -221,27 +221,27 @@
   max-height: 210px;
 }
 
-/* 재료는 그릇 그림 위에 %로 얹어요 — 그릇이 늘어나도 자리가 따라가요. */
-.bowl__item {
+/* 다져진 재료 조각. 그릇 그림 위에 %로 얹어요 — 그릇이 늘어나도 자리가 따라가요. */
+.bit {
   position: absolute;
-  transform: translate(-50%, -50%);
-  font-size: 30px;
-  line-height: 1;
   pointer-events: none;
+  border: 1px solid rgba(82, 32, 48, 0.28);
 }
 
-.bowl__more {
-  position: absolute;
-  right: 14%;
-  bottom: 14%;
-  background: var(--red);
-  color: var(--panel);
-  border: 2px solid var(--ink);
-  border-radius: 10px;
-  padding: 1px 7px;
-  font-size: 12px;
-  font-weight: 700;
+/* 깍둑썬 것 */
+.bit--dice {
+  width: 13px;
+  height: 11px;
+  border-radius: 3px;
 }
+
+/* 채썬 것 */
+.bit--sliver {
+  width: 19px;
+  height: 6px;
+  border-radius: 3px;
+}
+
 
 .bowl__empty {
   position: absolute;

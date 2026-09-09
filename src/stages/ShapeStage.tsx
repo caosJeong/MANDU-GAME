@@ -60,6 +60,7 @@ export function ShapeStage({ onDone }: { onDone: (shape: ShapeKind, cook: CookKi
 
   function pickShape(next: ShapeKind) {
     triggerHaptic("tap");
+    playSound("pick");
     setShape(next);
     // 모양을 바꾸면 그 모양으로 못 하는 조리법은 첫 번째 것으로 되돌려요.
     const cooks = SHAPES.find((s) => s.id === next)!.cooks;
@@ -97,6 +98,7 @@ export function ShapeStage({ onDone }: { onDone: (shape: ShapeKind, cook: CookKi
               disabled={!enabled}
               onClick={() => {
                 triggerHaptic("tap");
+                playSound("pick");
                 setCook(id);
               }}
             >
@@ -114,7 +116,7 @@ export function ShapeStage({ onDone }: { onDone: (shape: ShapeKind, cook: CookKi
         type="button"
         className="primary-button"
         onClick={() => {
-          playSound("done");
+          playSound("tap");
           onDone(shape, cook);
         }}
       >

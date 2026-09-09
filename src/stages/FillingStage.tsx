@@ -18,7 +18,7 @@ export function FillingStage({ onDone }: { onDone: (filling: Filling) => void })
   function add(id: string) {
     unlockAudio();
     triggerHaptic("tap");
-    playSound("tick");
+    playSound("toss");
     setFilling((prev) => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
   }
 
@@ -26,6 +26,7 @@ export function FillingStage({ onDone }: { onDone: (filling: Filling) => void })
   /** 수량 배지를 눌러 하나만 빼요. */
   function removeOne(id: string) {
     triggerHaptic("tickWeak");
+    playSound("undo");
     setFilling((prev) => {
       const next = { ...prev };
       if ((next[id] ?? 0) <= 1) delete next[id];
@@ -36,6 +37,7 @@ export function FillingStage({ onDone }: { onDone: (filling: Filling) => void })
 
   function reset() {
     triggerHaptic("error");
+    playSound("undo");
     setFilling({});
   }
 
@@ -81,7 +83,11 @@ export function FillingStage({ onDone }: { onDone: (filling: Filling) => void })
         type="button"
         className="primary-button"
         disabled={total === 0}
-        onClick={() => total > 0 && onDone(filling)}
+        onClick={() => {
+          if (total === 0) return;
+          playSound("tap");
+          onDone(filling);
+        }}
       >
         {total > 0 ? "이 재료로 만두속 만들기" : "재료를 넣어주세요"}
       </button>

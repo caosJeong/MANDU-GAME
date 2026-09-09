@@ -47,6 +47,7 @@ export function DoughStage({ onDone }: { onDone: (kind: DoughKind) => void }) {
             className={`option ${picked === option.id ? "option--on" : ""}`}
             onClick={() => {
               triggerHaptic("tap");
+              playSound("pick");
               setPicked(option.id);
             }}
           >
@@ -60,7 +61,7 @@ export function DoughStage({ onDone }: { onDone: (kind: DoughKind) => void }) {
         type="button"
         className="primary-button"
         onClick={() => {
-          playSound("fold");
+          playSound("roll");
           onDone(picked);
         }}
       >
