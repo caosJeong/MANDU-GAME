@@ -63,8 +63,8 @@
 
 /* 결과 화면은 요소가 많아서 한 화면에 들어오도록 조금 더 촘촘하게. */
 .screen--result {
-  gap: 9px;
-  padding-bottom: 14px;
+  gap: 8px;
+  padding-bottom: 12px;
 }
 
 /* ---------- 타이틀 ---------- */
@@ -598,14 +598,21 @@
 
 .reward-button {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   width: 100%;
   background: #fdf3d2;
   border: 2px solid var(--ink);
   border-radius: 14px;
-  padding: 13px;
+  padding: 10px 13px;
   text-align: left;
+}
+
+.reward-button__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .reward-button:disabled {
@@ -624,13 +631,12 @@
 }
 
 .reward-button__label {
-  flex: 1;
   font-size: 14px;
   font-weight: 700;
 }
 
 .reward-button__note {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
 }
 
@@ -750,9 +756,25 @@
 
 /* ---------- 배너 ---------- */
 
+/* 광고 영역임을 항상 눈에 보이게 표시해요 (검수 요구사항). */
+.banner-area {
+  flex: 0 0 auto;
+  background: var(--bg-deep);
+  padding-bottom: 2px;
+}
+
+.banner-area__label {
+  display: block;
+  padding: 3px 12px 1px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: #e3c9f0;
+}
+
 .banner-slot {
   flex: 0 0 auto;
-  min-height: 60px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;

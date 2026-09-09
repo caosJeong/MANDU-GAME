@@ -48,7 +48,7 @@ export function ResultScreen({
       <div className="result-hero">
         <Cat
           face={outcome.kind === "정통" ? "happy" : outcome.kind === "신메뉴" ? "surprised" : "sad"}
-          width={136}
+          width={118}
           mandu={outcome.kind === "실패" ? "#ded0bd" : "#f7dcb2"}
         />
         <h2 className="result-title">
@@ -107,9 +107,13 @@ export function ResultScreen({
         )}
         {!revealedNow && canHint && (
           <button type="button" className="reward-button" disabled={!adReady} onClick={onWatchHintAd}>
-            <span className="reward-button__ad">광고</span>
-            <span className="reward-button__label">광고 보고 힌트 보기</span>
-            <span className="reward-button__note">{adReady ? "재료 하나의 양" : "광고 준비 중"}</span>
+            <span className="reward-button__top">
+              <span className="reward-button__ad">광고</span>
+              <span className="reward-button__label">광고 영상 보고 힌트 얻기</span>
+            </span>
+            <span className="reward-button__note">
+              {adReady ? "영상이 끝나면 재료 하나의 양을 알려줘요" : "광고 준비 중이에요"}
+            </span>
           </button>
         )}
       </div>
