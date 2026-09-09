@@ -1,12 +1,19 @@
+/*
+ * 색은 원작 고향만두 플래시 게임 화면에서 직접 샘플링했어요.
+ * 보라 벽 위에 크림 패널을 얹고, 버튼엔 굵은 테두리와 각진 그림자 — 2000년대 플래시 레이아웃이에요.
+ */
 :root {
-  --brand: #e8894a;
-  --brand-dark: #c96e34;
-  --ink: #2b2118;
-  --muted: #8b7a6b;
-  --card: #ffffff;
-  --line: #f0e1d2;
-  --good: #34a853;
-  --bad: #e5484d;
+  --bg: #b068cc;
+  --bg-deep: #8e4faa;
+  --panel: #fff6e4;
+  --card: #fffdf2;
+  --line: #d8b98e;
+  --ink: #522030;
+  --muted: #8a6a5c;
+  --red: #e30208;
+  --red-deep: #7a0104;
+  --yellow: #f5dd85;
+  --good: #1ac213;
 }
 
 .app {
@@ -17,90 +24,67 @@
   margin: 0 auto;
 }
 
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  flex: 0 0 auto;
-}
-
-.icon-button {
-  background: none;
-  border: 0;
-  padding: 8px 10px;
-  font-size: 14px;
-  color: var(--muted);
-  border-radius: 10px;
-}
-
-.icon-button:active {
-  background: rgba(0, 0, 0, 0.05);
-}
-
 .app-body {
   flex: 1 1 auto;
   min-height: 0;
+  display: flex;
+  padding: 10px;
+}
+
+.panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 0 5px 0 #7a3f94;
 }
 
 .screen {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 8px 20px 24px;
-  min-height: 100%;
+  gap: 12px;
+  padding: 12px 14px 14px;
+  /* 1 1 auto 라야 남으면 늘고 모자라면 줄어요. 0 auto 로 두면 줄지 못해서
+     그릇 같은 신축 요소가 공간을 못 내주고 패널에 스크롤이 생겨요. */
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .screen--title {
   justify-content: center;
   text-align: center;
+  gap: 14px;
+}
+
+/* 결과 화면은 요소가 많아서 한 화면에 들어오도록 조금 더 촘촘하게. */
+.screen--result {
+  gap: 9px;
+  padding-bottom: 14px;
 }
 
 /* ---------- 타이틀 ---------- */
 
-.title-logo__emoji {
-  font-size: 72px;
-  display: block;
+.title-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title-logo__text {
   margin: 8px 0 4px;
-  font-size: 30px;
-  letter-spacing: -0.5px;
+  font-size: 32px;
+  letter-spacing: -1px;
 }
 
 .title-logo__sub {
-  margin: 0;
+  margin: 0 0 8px;
   color: var(--muted);
   font-size: 14px;
-}
-
-.title-stats {
-  display: flex;
-  gap: 12px;
-  margin: 12px 0;
-}
-
-.title-stats > div {
-  flex: 1;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.title-stats strong {
-  font-size: 20px;
-}
-
-.title-stats span {
-  font-size: 12px;
-  color: var(--muted);
 }
 
 .title-links {
@@ -108,78 +92,96 @@
   gap: 10px;
 }
 
-.ghost-button {
-  flex: 1;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 14px;
-}
+/* ---------- 버튼 ---------- */
 
 .primary-button {
-  background: var(--brand);
-  color: #fff;
-  border: 0;
+  background: var(--red);
+  color: var(--panel);
+  border: 3px solid var(--ink);
+  box-shadow: 0 4px 0 var(--red-deep);
   border-radius: 14px;
-  padding: 16px;
+  padding: 14px;
   font-size: 16px;
   font-weight: 700;
   width: 100%;
 }
 
+.primary-button--big {
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 16px;
+  box-shadow: 0 5px 0 var(--red-deep);
+}
+
 .primary-button:active:not(:disabled) {
-  background: var(--brand-dark);
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--red-deep);
 }
 
 .primary-button:disabled {
-  background: #e6d8ca;
-  color: #a3927f;
+  background: #e0cdb4;
+  color: #9d8a76;
+  box-shadow: 0 4px 0 #bda98f;
 }
 
-.primary-button--big {
-  padding: 18px;
-  font-size: 18px;
+.ghost-button {
+  flex: 1;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.primary-button--tap,
-.primary-button--hold {
-  padding: 22px;
-  touch-action: none;
-  user-select: none;
-}
+/* ---------- 단계 표시 ---------- */
 
-/* ---------- 플레이 공통 ---------- */
-
-.play-progress {
+.steps {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
   font-size: 13px;
-  color: var(--muted);
 }
 
-.play-progress__dots {
+.steps__item {
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: 8px;
 }
 
-.play-progress__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--line);
+.steps__sep {
+  color: var(--line);
 }
 
-.play-progress__dot.is-on {
-  background: var(--brand);
+.steps__label {
+  color: #b79e86;
+  font-weight: 500;
+}
+
+.steps__label.is-on {
+  color: var(--red);
+  font-weight: 700;
 }
 
 .stage {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
+  min-height: 0;
+}
+
+/* 내용이 짧은 화면에서 아래 버튼을 바닥에 붙여 여백을 없애요. */
+.spacer {
+  flex: 1;
+  min-height: 0;
+}
+
+.stage__titlerow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .stage__title {
@@ -190,186 +192,78 @@
 
 .stage__hint {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--muted);
   line-height: 1.5;
 }
 
-.stage__status {
-  margin: 0;
+.stage__caption {
+  margin: 4px 0 0;
   font-size: 13px;
   color: var(--muted);
-  text-align: center;
 }
 
-.stage__status--good {
-  color: var(--good);
-  font-weight: 700;
-}
+/* ---------- 1. 만두속 ---------- */
 
-/* ---------- 1. 반죽 ---------- */
-
-.dough {
-  flex: 1;
-  min-height: 220px;
-  border-radius: 20px;
-  background: repeating-linear-gradient(45deg, #f6e6d5, #f6e6d5 12px, #f2dfcb 12px, #f2dfcb 24px);
+.bowl {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 84px;
+  max-height: 210px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  touch-action: none;
-  user-select: none;
 }
 
-.dough__disc {
-  background: #f7e2c4;
-  border: 3px solid #e6c79c;
-  border-radius: 50%;
-  transition: width 60ms linear, height 60ms linear;
-}
-
-.dough__roller {
-  position: absolute;
-  bottom: 14px;
-  font-size: 30px;
-  opacity: 0.7;
-}
-
-/* ---------- 게이지 ---------- */
-
-.gauge {
-  position: relative;
-  height: 18px;
-  border-radius: 9px;
-  background: var(--line);
-  overflow: hidden;
-}
-
-.gauge--tall {
-  height: 26px;
-  border-radius: 13px;
-}
-
-.gauge__band {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  background: rgba(52, 168, 83, 0.32);
-}
-
-.gauge__band--dough {
-  left: 38%;
-  width: 24%;
-}
-
-.gauge__band--fold {
-  left: 38.5%;
-  width: 23%;
-}
-
-.gauge__marker {
-  position: absolute;
-  top: -3px;
-  bottom: -3px;
-  width: 5px;
-  margin-left: -2.5px;
-  border-radius: 3px;
-  background: var(--ink);
-}
-
-.gauge--vertical {
-  height: 180px;
-  width: 26px;
-  margin: 0 auto;
-  border-radius: 13px;
-}
-
-.gauge--vertical .gauge__band {
-  left: 0;
-  right: 0;
-  top: auto;
-  bottom: auto;
-}
-
-.gauge__band--cook {
-  bottom: 45%;
-  height: 33%;
-}
-
-.gauge__band--burn {
-  bottom: 94%;
-  height: 6%;
-  background: rgba(229, 72, 77, 0.45);
-}
-
-.gauge__marker--h {
-  top: auto;
-  left: -3px;
-  right: -3px;
-  width: auto;
-  height: 5px;
-  margin-left: 0;
-  margin-bottom: -2.5px;
-}
-
-.progress {
-  height: 12px;
-  border-radius: 6px;
-  background: var(--line);
-  overflow: hidden;
-}
-
-.progress__fill {
+.bowl__art {
+  width: 100%;
   height: 100%;
-  background: var(--brand);
-  transition: width 80ms linear;
+  max-height: 210px;
 }
 
-/* ---------- 2. 재료 ---------- */
-
-.order-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 12px 14px;
-}
-
-.order-card__face {
+/* 재료는 그릇 그림 위에 %로 얹어요 — 그릇이 늘어나도 자리가 따라가요. */
+.bowl__item {
+  position: absolute;
+  transform: translate(-50%, -50%);
   font-size: 30px;
+  line-height: 1;
+  pointer-events: none;
 }
 
-.order-card__hint {
-  display: flex;
-  flex-direction: column;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.order-card__hint em {
-  font-style: normal;
+.bowl__more {
+  position: absolute;
+  right: 14%;
+  bottom: 14%;
+  background: var(--red);
+  color: var(--panel);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 1px 7px;
   font-size: 12px;
-  color: var(--brand-dark);
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.bowl__empty {
+  position: absolute;
+  top: 44%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #7f9799;
 }
 
 .shelf {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  flex: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
   align-content: start;
 }
 
 .chip {
   position: relative;
   background: var(--card);
-  border: 1.5px solid var(--line);
+  border: 2px solid var(--line);
   border-radius: 14px;
-  padding: 10px 4px 8px;
+  padding: 5px 4px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -377,12 +271,12 @@
 }
 
 .chip--on {
-  border-color: var(--brand);
-  background: #fff2e6;
+  border-color: var(--ink);
+  background: var(--yellow);
 }
 
 .chip__emoji {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .chip__name {
@@ -391,19 +285,20 @@
 }
 
 .chip--on .chip__name {
-  color: var(--brand-dark);
+  color: var(--ink);
   font-weight: 700;
 }
 
-.chip__order {
+.chip__count {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--brand);
-  color: #fff;
+  top: -7px;
+  right: -7px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--red);
+  color: var(--panel);
+  border: 2px solid var(--ink);
   font-size: 11px;
   font-weight: 700;
   display: flex;
@@ -411,181 +306,241 @@
   justify-content: center;
 }
 
-/* ---------- 3. 빚기 ---------- */
-
-.fold-dots {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
+.picked__reset {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 9px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
 }
 
-.fold-dots__dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--line);
+.picked__reset:active {
+  background: var(--yellow);
+  border-color: var(--ink);
+  color: var(--ink);
 }
 
-.fold-dots__dot--on {
-  background: var(--brand);
-}
+/* ---------- 2. 반죽 ---------- */
 
-/* ---------- 4. 조리 ---------- */
-
-.steamer {
+.dough {
   flex: 1;
-  min-height: 140px;
+  min-height: 165px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: repeating-linear-gradient(45deg, #f2e4c4, #f2e4c4 12px, #ebd9b0 12px, #ebd9b0 24px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f3e7db;
-  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-.steamer__mandu {
-  font-size: 76px;
-  transition: filter 200ms linear, transform 200ms linear;
+/* 앞발을 반죽 원 기준으로 붙여야 반죽 칸이 커져도 같이 따라가요. */
+.dough__stack {
+  position: relative;
+  width: 150px;
+  height: 150px;
 }
 
-.steamer__mandu--good {
-  filter: saturate(1.15);
-  transform: scale(1.06);
+.dough__disc {
+  width: 100%;
+  height: 100%;
+  background: #f7e2c4;
+  border: 3px solid #c9a46e;
+  border-radius: 50%;
 }
 
-.steamer__mandu--danger {
-  filter: sepia(0.5) saturate(1.4);
+.dough__paw {
+  position: absolute;
+  top: 34%;
+  line-height: 0;
 }
 
-.steamer__mandu--burn {
-  filter: grayscale(0.7) brightness(0.55);
+.dough__paw--left {
+  left: -34px;
+}
+
+.dough__paw--right {
+  right: -34px;
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 13px;
+  width: 100%;
+  text-align: left;
+}
+
+.option--on {
+  background: var(--yellow);
+  border-color: var(--ink);
+}
+
+.option__title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.option__desc {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- 3. 모양 + 조리법 ---------- */
+
+.shape-row {
+  display: flex;
+  gap: 8px;
+}
+
+.shape {
+  flex: 1;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.shape--on {
+  background: var(--yellow);
+  border-color: var(--ink);
+}
+
+.shape__name {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.shape--on .shape__name {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.cook-row {
+  display: flex;
+  gap: 8px;
+}
+
+.cook {
+  flex: 1;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 14px;
+}
+
+.cook--on {
+  background: var(--yellow);
+  border-color: var(--ink);
+  color: var(--red);
+  font-weight: 700;
+}
+
+.cook:disabled {
+  color: #ccbcab;
+}
+
+.workbench {
+  flex: 1;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2e4c4;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 10px 0;
 }
 
 /* ---------- 결과 ---------- */
 
-.result-title {
-  margin: 4px 0 0;
-  font-size: 20px;
-}
-
-.grade-summary {
-  display: flex;
-  gap: 8px;
-}
-
-.grade-summary__item {
-  flex: 1;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 4px;
-  text-align: center;
-}
-
-.grade-summary__item strong {
-  display: block;
-  font-size: 20px;
-}
-
-.grade-summary__item span {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.grade-summary__item--히든 {
-  border-color: var(--brand);
-  background: #fff2e6;
-}
-
-.result-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.result-hero {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 6px;
+  padding: 2px 0;
 }
 
-.result-list__row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 12px;
+.result-title {
+  margin: 2px 0 0;
+  font-size: 21px;
+  text-align: center;
+}
+
+.result-title--left {
+  text-align: left;
+  font-size: 20px;
+}
+
+.result-sub {
+  margin: 0;
   font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
 }
 
-.result-list__name {
-  flex: 1;
+.result-card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.result-list__meta {
+.result-card--accent {
+  background: var(--yellow);
+  border-color: var(--ink);
+}
+
+.result-card__label {
   font-size: 12px;
   color: var(--muted);
 }
 
-.badge {
-  min-width: 34px;
-  text-align: center;
-  border-radius: 8px;
-  padding: 3px 6px;
-  font-size: 12px;
+.result-card--accent .result-card__label {
+  color: var(--ink);
   font-weight: 700;
-  background: var(--line);
 }
 
-.badge--상 {
-  background: #dff3e2;
-  color: #226b33;
-}
-
-.badge--히든 {
-  background: var(--brand);
-  color: #fff;
-}
-
-.badge--하 {
-  background: #fbe2e2;
-  color: #a3282c;
-}
-
-.hidden-banner {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: #fff2e6;
-  border: 1px solid var(--brand);
-  border-radius: 14px;
-  padding: 12px 14px;
+.result-card__body {
   font-size: 14px;
-  font-weight: 700;
+  line-height: 1.7;
 }
 
-.hidden-banner span {
-  font-weight: 500;
+.result-card__name {
+  font-size: 16px;
+}
+
+.result-card__meta {
   font-size: 13px;
-  color: var(--brand-dark);
+  color: var(--muted);
 }
 
-.points-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px;
-}
-
-.points-box strong {
-  font-size: 20px;
-}
-
-.points-box em {
-  font-style: normal;
-  font-size: 13px;
-  color: var(--good);
+.result-card--accent .result-card__meta {
+  color: var(--ink);
 }
 
 .cta-stack {
@@ -594,15 +549,48 @@
   gap: 8px;
 }
 
+.cta-stack:empty {
+  display: none;
+}
+
+/* 광고를 본 직후 무엇을 얻었는지 그 자리에서 보여줘요. */
+.reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 9px 12px;
+  text-align: center;
+}
+
+.reveal__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+}
+
+.reveal__item {
+  font-size: 18px;
+}
+
+.reveal__note {
+  font-size: 12px;
+  color: var(--ink);
+  opacity: 0.75;
+}
+
 .reward-button {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
-  background: #fffaf4;
-  border: 1.5px solid var(--brand);
+  background: #fdf3d2;
+  border: 2px solid var(--ink);
   border-radius: 14px;
-  padding: 14px;
+  padding: 13px;
   text-align: left;
 }
 
@@ -632,7 +620,52 @@
   color: var(--muted);
 }
 
-/* ---------- 도감 / 랭킹 ---------- */
+/* ---------- 도감 ---------- */
+
+.recipe-card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recipe-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+}
+
+.recipe-card__head span {
+  font-size: 13px;
+  color: var(--red);
+  font-weight: 700;
+}
+
+.recipe-card__slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.slot {
+  background: #f7edd9;
+  border: 2px dashed var(--line);
+  border-radius: 9px;
+  padding: 3px 10px;
+  font-size: 12px;
+  color: #a8907c;
+}
+
+.slot--on {
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-weight: 700;
+}
 
 .collection-progress {
   display: flex;
@@ -642,92 +675,66 @@
   color: var(--muted);
 }
 
+.progress {
+  height: 12px;
+  border-radius: 6px;
+  background: #e8d5b8;
+  border: 2px solid var(--line);
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  background: var(--red);
+}
+
 .collection {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  flex: 1;
+  align-content: start;
 }
 
 .collection__item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   background: var(--card);
-  border: 1px solid var(--line);
+  border: 2px solid var(--line);
   border-radius: 14px;
-  padding: 12px 14px;
+  padding: 8px 10px;
 }
 
 .collection__item.is-owned {
-  border-color: var(--brand);
+  border-color: var(--ink);
 }
 
 .collection__emoji {
-  font-size: 28px;
+  font-size: 22px;
+  flex: 0 0 auto;
 }
 
 .collection__body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
+  min-width: 0;
+}
+
+.collection__body strong {
+  font-size: 13px;
 }
 
 .collection__body small {
-  font-size: 12px;
+  font-size: 10px;
+  line-height: 1.35;
   color: var(--muted);
 }
 
-.ranking-week {
-  margin: 0;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.ranking-me {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px;
-}
-
-.ranking-me__label {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.ranking-me__grid {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.ranking-me__grid > div {
-  flex: 1;
-  text-align: center;
-}
-
-.ranking-me__grid strong {
-  display: block;
-  font-size: 20px;
-}
-
-.ranking-me__grid span {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.ranking-note {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--muted);
-  flex: 1;
-}
-
-/* ---------- 배너 슬롯 ---------- */
+/* ---------- 배너 ---------- */
 
 .banner-slot {
   flex: 0 0 auto;
@@ -735,8 +742,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid var(--line);
-  background: #fdf3e8;
+  background: var(--bg-deep);
+  position: relative;
 }
 
 .banner-slot__inner {
@@ -748,5 +755,5 @@
 .banner-slot__placeholder {
   position: absolute;
   font-size: 11px;
-  color: #bbaa99;
+  color: #e3c9f0;
 }

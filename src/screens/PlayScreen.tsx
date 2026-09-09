@@ -1,92 +1,59 @@
 import { useState } from "react";
-import { DoughStage } from "../stages/DoughStage";
 import { FillingStage } from "../stages/FillingStage";
-import { FoldStage } from "../stages/FoldStage";
-import { CookStage } from "../stages/CookStage";
-import { judge, type MandiResult, type StageScores } from "../game/scoring";
-import type { Order } from "../game/orders";
+import { DoughStage, type DoughKind } from "../stages/DoughStage";
+import { ShapeStage, type CookKind, type ShapeKind } from "../stages/ShapeStage";
+import type { Filling } from "../game/recipe";
 
-type Step = "dough" | "filling" | "fold" | "cook";
+export type RoundInput = {
+  filling: Filling;
+  dough: DoughKind;
+  shape: ShapeKind;
+  cook: CookKind;
+};
 
-const EMPTY_STAGES: StageScores = { dough: 0, fold: 0, cook: 0 };
+const STEPS = ["만두속", "반죽", "모양"];
 
 /**
  * 메인 플레이 화면이에요.
- * 주문 하나당 만두피 → 재료 → 빚기 → 조리 4단계를 돌고, 주문을 모두 처리하면 한 판이 끝나요.
+ * 원작처럼 만두속 → 반죽 → 모양+조리법 세 단계를 고르면 한 판이 끝나요.
  */
-export function PlayScreen({
-  orders,
-  extraSlot,
-  onFinish,
-}: {
-  orders: Order[];
-  extraSlot: boolean;
-  onFinish: (results: MandiResult[]) => void;
-}) {
-  const [orderIndex, setOrderIndex] = useState(0);
-  const [step, setStep] = useState<Step>("dough");
-  const [stages, setStages] = useState<StageScores>(EMPTY_STAGES);
-  const [filling, setFilling] = useState<string[]>([]);
-  const [results, setResults] = useState<MandiResult[]>([]);
-
-  const order = orders[orderIndex];
-
-  function finishMandu(cookScore: number) {
-    const finalStages = { ...stages, cook: cookScore };
-    const result = judge(filling, finalStages, order);
-    const nextResults = [...results, result];
-
-    if (orderIndex + 1 >= orders.length) {
-      onFinish(nextResults);
-      return;
-    }
-    setResults(nextResults);
-    setOrderIndex(orderIndex + 1);
-    setStages(EMPTY_STAGES);
-    setFilling([]);
-    setStep("dough");
-  }
+export function PlayScreen({ onFinish }: { onFinish: (input: RoundInput) => void }) {
+  const [step, setStep] = useState(0);
+  const [filling, setFilling] = useState<Filling>({});
+  const [dough, setDough] = useState<DoughKind>("normal");
 
   return (
     <div className="screen screen--play">
-      <div className="play-progress">
-        <span>
-          주문 {orderIndex + 1} / {orders.length}
-        </span>
-        <div className="play-progress__dots">
-          {orders.map((_, i) => (
-            <span key={i} className={`play-progress__dot ${i <= orderIndex ? "is-on" : ""}`} />
-          ))}
-        </div>
+      <div className="steps">
+        {STEPS.map((name, i) => (
+          <span key={name} className="steps__item">
+            {i > 0 && <span className="steps__sep">›</span>}
+            <span className={`steps__label ${i === step ? "is-on" : ""}`}>
+              {i + 1}. {name}
+            </span>
+          </span>
+        ))}
       </div>
 
-      {step === "dough" && (
-        <DoughStage
-          onDone={(score) => {
-            setStages((prev) => ({ ...prev, dough: score }));
-            setStep("filling");
-          }}
-        />
-      )}
-      {step === "filling" && (
+      {step === 0 && (
         <FillingStage
-          order={order}
-          extraSlot={extraSlot}
-          onDone={(ids) => {
-            setFilling(ids);
-            setStep("fold");
+          onDone={(next) => {
+            setFilling(next);
+            setStep(1);
           }}
         />
       )}
-      {step === "fold" && (
-        <FoldStage
-          onDone={(score) => {
-            setStages((prev) => ({ ...prev, fold: score }));
-            setStep("cook");
+      {step === 1 && (
+        <DoughStage
+          onDone={(kind) => {
+            setDough(kind);
+            setStep(2);
           }}
         />
       )}
-      {step === "cook" && <CookStage onDone={finishMandu} />}
+      {step === 2 && (
+        <ShapeStage onDone={(shape, cook) => onFinish({ filling, dough, shape, cook })} />
+      )}
     </div>
   );
 }

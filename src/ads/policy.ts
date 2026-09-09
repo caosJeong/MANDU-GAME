@@ -9,14 +9,13 @@
 export type AdFormat = "rewarded" | "banner";
 
 /** 배너 노출 허용 화면이에요 (기획서 4.2 배치안). */
-export type ScreenId = "title" | "play" | "result" | "collection" | "ranking";
+export type ScreenId = "title" | "play" | "result" | "collection";
 
 const BANNER_ALLOWED_SCREENS: Record<ScreenId, boolean> = {
   title: false, // 첫인상 보호 + 진입 직후 강제 요소 금지
   play: true, // 하단 고정, 조작 영역과 겹치지 않는 높이
   result: true, // 보상형 CTA와 겹치지 않게 배치
   collection: true,
-  ranking: true,
 };
 
 export function isBannerAllowedOn(screen: ScreenId): boolean {
@@ -53,14 +52,19 @@ export type PolicyViolation = {
   message: string;
 };
 
+/** 발급 전/미설정 상태를 한눈에 알 수 있게 두는 값이에요. */
+const UNSET = "TEST_AD_GROUP_ID_NOT_SET";
+
 /**
- * TODO: 콘솔 > 인앱 광고에서 이 미니앱용 광고 그룹을 발급받아 교체해요.
- * 발급 전에는 로컬/QR 테스트에서 unsupported로 떨어지고 보상도 지급되지 않아요.
- * (기획서 8번: 배너 광고 네트워크/연동 규격 확인 필요)
+ * 광고 지면 ID는 `.env` 에서 읽어요 (공개 저장소에 값을 두지 않으려고요).
+ * `.env.example` 을 복사해 콘솔 > 인앱 광고에서 발급받은 값을 채우세요.
+ *
+ * 주의: Vite 가 빌드 시점에 값을 번들에 심기 때문에, 배포된 앱에서는 여전히
+ * 꺼내볼 수 있어요. 저장소에 안 남길 뿐 비밀값이 되는 건 아니에요.
  */
 export const AD_GROUP_IDS = {
-  rewarded: "TEST_REWARDED_AD_GROUP_ID",
-  banner: "TEST_BANNER_AD_GROUP_ID",
+  rewarded: import.meta.env.VITE_AD_GROUP_REWARDED || UNSET,
+  banner: import.meta.env.VITE_AD_GROUP_BANNER || UNSET,
 } as const;
 
 export function isPlaceholderAdGroupId(id: string): boolean {

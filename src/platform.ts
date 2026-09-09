@@ -1,22 +1,13 @@
 /**
  * 토스 앱(WebView) 환경 관련 유틸이에요.
- * 앱인토스 정책상 "모든 화면에서 미니앱 나가기 경로 확보"가 필요해서
- * 헤더의 나가기 버튼이 이 함수를 써요.
+ *
+ * 나가기/뒤로가기/홈은 토스가 미니앱 위에 그려주는 내비게이션 바가 담당해요.
+ * (developers-apps-in-toss.toss.im/bedrock/reference/framework/UI/NavigationBar)
+ * 그래서 앱 안에 따로 나가기 버튼을 두지 않아요.
  */
-import { SafeArea, Screen, User } from "@apps-in-toss/web-framework";
+import { SafeArea, User } from "@apps-in-toss/web-framework";
 import { useEffect, useState } from "react";
 import { hasAppsInTossBridge } from "./ads/bridge";
-
-/** 미니앱을 닫아요. 브릿지가 없는 로컬 브라우저에서는 아무 일도 하지 않아요. */
-export async function closeMiniApp(): Promise<boolean> {
-  if (!hasAppsInTossBridge()) return false;
-  try {
-    await Screen.close();
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 export type Insets = { top: number; bottom: number; left: number; right: number };
 

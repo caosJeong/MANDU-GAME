@@ -3,3 +3,8 @@ dist
 *.ait
 *.tsbuildinfo
 .DS_Store
+
+# 광고 지면 ID 등 환경값 — .env.example 만 올려요
+.env
+.env.*
+!.env.example

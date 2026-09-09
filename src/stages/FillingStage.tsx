@@ -1,73 +1,60 @@
 import { useState } from "react";
 import { INGREDIENTS } from "../game/ingredients";
-import { intentLabel, type Order } from "../game/orders";
+import { Bowl } from "../components/Bowl";
+import type { Filling } from "../game/recipe";
 import { triggerHaptic } from "../game/haptics";
-import { playSound } from "../game/sounds";
-
-const MIN_PICK = 2; // 히든 레시피에 2개짜리 조합(초코+딸기 등)이 있어서 2개부터 허용해요
-const BASE_MAX_PICK = 4;
+import { playSound, unlockAudio } from "../game/sounds";
 
 /**
- * 2단계 — 재료 조합으로 소 만들기.
- * 보상형 광고로 "재료 추가"를 받은 판에서는 최대 선택 개수가 1개 늘어나요.
+ * 1단계 — 만두속 만들기.
+ * 같은 재료를 여러 번 넣을 수 있어요. 종류뿐 아니라 개수까지 맞아야 정통 만두가 나와요.
+ * 정답 여부는 여기서 알려주지 않아요 (힌트는 만두가 완성된 뒤에만 제안해요).
  */
-export function FillingStage({
-  order,
-  extraSlot,
-  onDone,
-}: {
-  order: Order;
-  extraSlot: boolean;
-  onDone: (ids: string[]) => void;
-}) {
-  const [picked, setPicked] = useState<string[]>([]);
-  const maxPick = BASE_MAX_PICK + (extraSlot ? 1 : 0);
+export function FillingStage({ onDone }: { onDone: (filling: Filling) => void }) {
+  const [filling, setFilling] = useState<Filling>({});
 
-  function toggle(id: string) {
-    setPicked((prev) => {
-      if (prev.includes(id)) {
-        triggerHaptic("tickWeak");
-        return prev.filter((it) => it !== id);
-      }
-      if (prev.length >= maxPick) {
-        triggerHaptic("error");
-        return prev;
-      }
-      triggerHaptic("tap");
-      playSound("tick");
-      return [...prev, id];
-    });
+  const total = Object.values(filling).reduce((a, b) => a + b, 0);
+
+  function add(id: string) {
+    unlockAudio();
+    triggerHaptic("tap");
+    playSound("tick");
+    setFilling((prev) => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
   }
 
-  const canConfirm = picked.length >= MIN_PICK;
+  /** 그릇을 통째로 비워요. 수량까지 맞춰야 해서 처음부터 다시 담는 일이 잦아요. */
+  function reset() {
+    triggerHaptic("error");
+    setFilling({});
+  }
 
   return (
     <div className="stage">
-      <p className="stage__title">2. 재료 넣기</p>
-      <div className="order-card">
-        <span className="order-card__face">{order.customer}</span>
-        <span className="order-card__hint">
-          “{order.hint}”
-          <em>{intentLabel(order.intent)} 계열</em>
-        </span>
+      <div className="stage__titlerow">
+        <p className="stage__title">만두속 만들기</p>
+        {total > 0 && (
+          <button type="button" className="picked__reset" onClick={reset}>
+            비우기
+          </button>
+        )}
       </div>
-      <p className="stage__hint">
-        {MIN_PICK}~{maxPick}개를 골라요{extraSlot ? " (광고 보상: 슬롯 +1)" : ""} · {picked.length}/{maxPick}
-      </p>
+      <p className="stage__hint">같은 재료를 여러 번 넣어도 돼요. 양까지 맞아야 해요.</p>
+
+      <Bowl filling={filling} />
 
       <div className="shelf">
         {INGREDIENTS.map((item) => {
-          const index = picked.indexOf(item.id);
+          const count = filling[item.id] ?? 0;
           return (
             <button
               key={item.id}
               type="button"
-              className={`chip ${index >= 0 ? "chip--on" : ""}`}
-              onClick={() => toggle(item.id)}
+              className={`chip ${count > 0 ? "chip--on" : ""}`}
+              onClick={() => add(item.id)}
             >
               <span className="chip__emoji">{item.emoji}</span>
               <span className="chip__name">{item.name}</span>
-              {index >= 0 && <span className="chip__order">{index + 1}</span>}
+              {count > 0 && <span className="chip__count">{count}</span>}
             </button>
           );
         })}
@@ -76,10 +63,10 @@ export function FillingStage({
       <button
         type="button"
         className="primary-button"
-        disabled={!canConfirm}
-        onClick={() => canConfirm && onDone(picked)}
+        disabled={total === 0}
+        onClick={() => total > 0 && onDone(filling)}
       >
-        {canConfirm ? "이 재료로 만들기" : `재료를 ${MIN_PICK - picked.length}개 더 골라주세요`}
+        {total > 0 ? "이 재료로 만두속 만들기" : "재료를 넣어주세요"}
       </button>
     </div>
   );
