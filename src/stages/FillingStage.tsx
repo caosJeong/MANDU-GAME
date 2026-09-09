@@ -23,6 +23,17 @@ export function FillingStage({ onDone }: { onDone: (filling: Filling) => void })
   }
 
   /** 그릇을 통째로 비워요. 수량까지 맞춰야 해서 처음부터 다시 담는 일이 잦아요. */
+  /** 수량 배지를 눌러 하나만 빼요. */
+  function removeOne(id: string) {
+    triggerHaptic("tickWeak");
+    setFilling((prev) => {
+      const next = { ...prev };
+      if ((next[id] ?? 0) <= 1) delete next[id];
+      else next[id] = next[id] - 1;
+      return next;
+    });
+  }
+
   function reset() {
     triggerHaptic("error");
     setFilling({});
@@ -46,16 +57,22 @@ export function FillingStage({ onDone }: { onDone: (filling: Filling) => void })
         {INGREDIENTS.map((item) => {
           const count = filling[item.id] ?? 0;
           return (
-            <button
-              key={item.id}
-              type="button"
-              className={`chip ${count > 0 ? "chip--on" : ""}`}
-              onClick={() => add(item.id)}
-            >
-              <span className="chip__emoji">{item.emoji}</span>
-              <span className="chip__name">{item.name}</span>
-              {count > 0 && <span className="chip__count">{count}</span>}
-            </button>
+            <div key={item.id} className={`chip ${count > 0 ? "chip--on" : ""}`}>
+              <button type="button" className="chip__add" onClick={() => add(item.id)}>
+                <span className="chip__emoji">{item.emoji}</span>
+                <span className="chip__name">{item.name}</span>
+              </button>
+              {count > 0 && (
+                <button
+                  type="button"
+                  className="chip__count"
+                  aria-label={`${item.name} 하나 빼기`}
+                  onClick={() => removeOne(item.id)}
+                >
+                  {count}
+                </button>
+              )}
+            </div>
           );
         })}
       </div>

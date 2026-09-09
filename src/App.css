@@ -263,6 +263,13 @@
   background: var(--card);
   border: 2px solid var(--line);
   border-radius: 14px;
+}
+
+.chip__add {
+  width: 100%;
+  background: none;
+  border: 0;
+  border-radius: 12px;
   padding: 5px 4px 4px;
   display: flex;
   flex-direction: column;
@@ -289,6 +296,7 @@
   font-weight: 700;
 }
 
+/* 배지를 누르면 하나만 빠져요. 손가락으로 집기 쉽게 여백을 넉넉히 잡았어요. */
 .chip__count {
   position: absolute;
   top: -7px;
@@ -304,6 +312,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.chip__count:active {
+  background: var(--ink);
 }
 
 .picked__reset {
